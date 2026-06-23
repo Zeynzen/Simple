@@ -8,19 +8,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Rajdhani', sans-serif; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0a 70%); overflow: hidden; }
-        
         .orbital-ring { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border: 2px solid rgba(233, 69, 96, 0.1); border-radius: 50%; animation: rotate 10s linear infinite; pointer-events: none; }
         .orbital-ring:nth-child(2) { width: 400px; height: 400px; animation-duration: 15s; animation-direction: reverse; border-color: rgba(233, 69, 96, 0.05); }
         .orbital-ring:nth-child(3) { width: 500px; height: 500px; animation-duration: 20s; border-color: rgba(233, 69, 96, 0.03); }
         .orbit-dot { position: absolute; width: 8px; height: 8px; background: #e94560; border-radius: 50%; box-shadow: 0 0 15px #e94560; top: -4px; left: 50%; }
-        .orbit-dot:nth-child(2) { top: 50%; right: -4px; left: auto; }
-        .orbit-dot:nth-child(3) { bottom: -4px; top: auto; left: 50%; }
         @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        
         .loader-ring { width: 60px; height: 60px; border: 3px solid #1a1a2e; border-top: 3px solid #e94560; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
         .loader-ring.show { display: block; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .container { background: linear-gradient(145deg, #0f0f1a, #1a1a35); padding: 40px 30px; border-radius: 20px; text-align: center; max-width: 450px; width: 95%; box-shadow: 0 0 60px rgba(233, 69, 96, 0.15); border: 1px solid rgba(233, 69, 96, 0.2); z-index: 1; position: relative; }
         h2 { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 900; background: linear-gradient(135deg, #e94560, #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 5px; }
         .subtitle { color: #666; font-size: 13px; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 2px; }
@@ -30,7 +25,7 @@
         input:focus { border-color: #e94560; box-shadow: 0 0 15px rgba(233, 69, 96, 0.2); }
         .btn { background: linear-gradient(135deg, #e94560, #c73652); color: #fff; border: none; padding: 14px 30px; border-radius: 25px; font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; text-transform: uppercase; width: 100%; margin-top: 10px; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(233, 69, 96, 0.4); }
-        .btn:disabled { background: #333; cursor: not-allowed; transform: none; box-shadow: none; }
+        .btn:disabled { background: #333; cursor: not-allowed; }
         .key-box { background: linear-gradient(145deg, #0f0f1a, #1a1a35); border: 2px solid #00c853; padding: 25px; border-radius: 15px; margin-top: 20px; display: none; animation: glow 2s infinite; }
         @keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(0,200,83,0.3)} 50%{box-shadow:0 0 40px rgba(0,200,83,0.6)} }
         .key-box.show { display: block; }
@@ -40,30 +35,25 @@
     </style>
 </head>
 <body>
-    <div class="orbital-ring"><div class="orbit-dot"></div><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
-    <div class="orbital-ring"><div class="orbit-dot"></div><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
-    <div class="orbital-ring"><div class="orbit-dot"></div><div class="orbit-dot"></div><div class="orbit-dot"></div></div>
+    <div class="orbital-ring"><div class="orbit-dot"></div></div>
+    <div class="orbital-ring"><div class="orbit-dot"></div></div>
+    <div class="orbital-ring"><div class="orbit-dot"></div></div>
 
     <div class="container">
         <h2>KEY VERIFICATION</h2>
         <p class="subtitle">Enter your details to continue</p>
-
         <div class="input-group">
             <label>Roblox Username</label>
             <input type="text" id="robloxUser" placeholder="Enter your Roblox username">
             <p class="error" id="robloxError">Username not found!</p>
         </div>
-
         <div class="input-group">
             <label>Discord Username</label>
             <input type="text" id="discordUser" placeholder="Enter your Discord username">
         </div>
-
         <div class="loader-ring" id="loader"></div>
-
         <button class="btn" id="continueBtn" onclick="verifyUser()">CONTINUE</button>
         <p class="status" id="statusText"></p>
-
         <div class="key-box" id="keyBox">
             <p style="color:#888;font-size:11px;">YOUR KEY</p>
             <div class="key-code" id="keyCode"></div>
@@ -73,23 +63,18 @@
 
     <script>
         var API_URL = 'https://samatala-lant-production.up.railway.app';
-
         async function verifyUser() {
             var robloxUser = document.getElementById('robloxUser').value.trim();
             var discordUser = document.getElementById('discordUser').value.trim();
-
             if (!robloxUser) return alert('Enter Roblox username!');
             if (!discordUser) return alert('Enter Discord username!');
-
             document.getElementById('continueBtn').disabled = true;
             document.getElementById('continueBtn').textContent = 'VERIFYING...';
             document.getElementById('loader').classList.add('show');
             document.getElementById('statusText').textContent = 'Checking...';
-
             try {
                 var res = await fetch('https://users.roblox.com/v1/users/search?keyword=' + robloxUser + '&limit=1');
                 var data = await res.json();
-                
                 if (!data.data || data.data.length === 0) {
                     document.getElementById('robloxError').style.display = 'block';
                     document.getElementById('continueBtn').disabled = false;
@@ -98,16 +83,12 @@
                     document.getElementById('statusText').textContent = '';
                     return;
                 }
-
                 var userId = data.data[0].id;
                 var displayName = data.data[0].displayName || data.data[0].name;
-
                 document.getElementById('robloxError').style.display = 'none';
                 document.getElementById('statusText').textContent = 'Found: ' + displayName;
-
                 var verifyRes = await fetch(API_URL + '/whitelist-user?robloxId=' + userId + '&discordName=' + encodeURIComponent(discordUser) + '&duration=2h');
                 var verifyData = await verifyRes.json();
-
                 if (verifyData.success) {
                     document.getElementById('keyCode').textContent = verifyData.key;
                     document.getElementById('keyBox').classList.add('show');
@@ -122,7 +103,6 @@
                 document.getElementById('loader').classList.remove('show');
                 document.getElementById('statusText').textContent = 'Connection error!';
             }
-
             document.getElementById('continueBtn').disabled = false;
             document.getElementById('continueBtn').textContent = 'CONTINUE';
         }
